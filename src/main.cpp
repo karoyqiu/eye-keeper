@@ -12,27 +12,15 @@
  **************************************************************************************************/
 #include <wiringPi.h>
 
-#include <iostream>
-
-
-static void onBodyTriggered()
-{
-    time_t now = 0;
-    time(&now);
-    std::cout << ctime(&now) << " Signal " << digitalRead(4) << std::endl;
-}
+#include "beeper.h"
 
 
 int main(int argc, char *argv[])
 {
     wiringPiSetup();
-    pinMode(1, OUTPUT);
-    digitalWrite(1, HIGH);
 
-    wiringPiISR(4, INT_EDGE_BOTH, onBodyTriggered);
-
-    std::cout << "Input something to exit." << std::endl;
-    std::getchar();
+    Beeper beeper(5, 6);
+    beeper.beep();
 
     return 0;
 }

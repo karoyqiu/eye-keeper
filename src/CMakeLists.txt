@@ -8,6 +8,7 @@ find_package(WiringPi REQUIRED)
 # 添加项目
 add_executable(eyekeeper
     main.cpp
+    beeper.h beeper.cpp
 )
 
 target_compile_options(eyekeeper PRIVATE ${PROJECT_WARNING_FLAGS})
