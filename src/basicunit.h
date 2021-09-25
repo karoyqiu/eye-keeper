@@ -1,7 +1,7 @@
 ﻿/*! ***********************************************************************************************
  *
- * \file        beeper.h
- * \brief       Beeper 类头文件。
+ * \file        BasicUnit.h
+ * \brief       BasicUnit 类头文件。
  *
  * \version     1.0
  * \date        2021-09-25
@@ -11,14 +11,21 @@
  *
  **************************************************************************************************/
 #pragma once
-#include "basicunit.h"
+#include <boost/noncopyable.hpp>
 
 
-// YX55675
-class Beeper : public BasicUnit
+// 基础元件
+class BasicUnit : private boost::noncopyable
 {
 public:
-    Beeper(int vcc, int io);
+    BasicUnit(int power, int io, bool input = false);
+    virtual ~BasicUnit();
 
-    void beep();
+private:
+    void exportPin(int pin, bool input);
+
+protected:
+    int power_;
+    int io_;
 };
+

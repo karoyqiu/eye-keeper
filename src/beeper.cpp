@@ -17,21 +17,10 @@
 
 
 Beeper::Beeper(int vcc, int io)
-    : vcc_(vcc)
-    , io_(io)
+    : BasicUnit(vcc, io)
 {
-    pinMode(vcc_, OUTPUT);
-    pinMode(io_, OUTPUT);
-
     digitalWrite(io_, HIGH);
-    digitalWrite(vcc_, HIGH);
     softToneCreate(io_);
-}
-
-
-Beeper::~Beeper()
-{
-    digitalWrite(vcc_, LOW);
 }
 
 
