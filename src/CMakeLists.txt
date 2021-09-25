@@ -12,12 +12,13 @@ add_executable(eyekeeper
     basicunit.h basicunit.cpp
     beeper.h beeper.cpp
     humaninfraredsensor.h humaninfraredsensor.cpp
+    ultrasound.h ultrasound.cpp
 )
 
 target_compile_options(eyekeeper PRIVATE ${PROJECT_WARNING_FLAGS})
 target_precompile_headers(eyekeeper PRIVATE
     <wiringPi.h>
-    <boost/signals2.hpp> <boost/program_options.hpp> <boost/thread.hpp>
+    <boost/chrono.hpp> <boost/signals2.hpp> <boost/program_options.hpp> <boost/thread.hpp>
 )
 target_link_libraries(eyekeeper PRIVATE
     WiringPi

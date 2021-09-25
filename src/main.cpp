@@ -16,20 +16,27 @@
 #include <boost/thread/thread.hpp>
 
 #include "beeper.h"
-#include "humaninfraredsensor.h"
+ //#include "humaninfraredsensor.h"
+#include "ultrasound.h"
 
 
 int main(int argc, char *argv[])
 {
     wiringPiSetup();
 
-    Beeper beeper(5, 6);
-    HumanInfraredSensor humanSensor(1, 4);
-    humanSensor.onEnter([&beeper]() { beeper.beep(); });
-    humanSensor.onLeave([&beeper]() { beeper.beep(); delay(200); beeper.beep(); });
-
     boost::signals2::signal<void()> onTimeout;
-    onTimeout.connect(boost::bind(&HumanInfraredSensor::check, &humanSensor));
+
+    Beeper beeper(1, 4);
+
+    //HumanInfraredSensor humanSensor(1, 4);
+    //humanSensor.onEnter([&beeper]() { beeper.beep(); });
+    //humanSensor.onLeave([&beeper]() { beeper.beep(); delay(200); beeper.beep(); });
+    //onTimeout.connect(boost::bind(&HumanInfraredSensor::check, &humanSensor));
+
+    Ultrasound ultra(5, 6, 10);
+    ultra.onTooClose(boost::bind(&Beeper::beep, &beeper));
+
+    onTimeout.connect(boost::bind(&Ultrasound::trigger, &ultra));
 
     for (;;)
     {

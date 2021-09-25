@@ -21,8 +21,8 @@ public:
     BasicUnit(int power, int io, bool input = false);
     virtual ~BasicUnit();
 
-private:
-    void exportPin(int pin, bool input);
+protected:
+    static void exportPin(int pin, bool input);
 
 protected:
     int power_;
