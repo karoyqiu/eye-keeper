@@ -12,12 +12,16 @@
  **************************************************************************************************/
 #pragma once
 #include <boost/noncopyable.hpp>
+#include <boost/signals2.hpp>
 
 
 // 基础元件
 class BasicUnit : private boost::noncopyable
 {
 public:
+    using OnEvent = boost::signals2::signal<void()>;
+    using OnEventSlot = OnEvent::slot_type;
+
     BasicUnit(int power, int io, bool input = false);
     virtual ~BasicUnit();
 

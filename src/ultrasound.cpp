@@ -53,6 +53,10 @@ void Ultrasound::onEcho()
             std::cout << "Diff: " << diff << ", distance: " << dist << "cm" << std::endl;
             instance_->onTooClose_();
         }
+        else
+        {
+            instance_->onFarEnough_();
+        }
     }
     else
     {

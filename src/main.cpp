@@ -34,13 +34,26 @@ int main(int argc, char *argv[])
     //onTimeout.connect(boost::bind(&HumanInfraredSensor::check, &humanSensor));
 
     Ultrasound ultra(5, 6, 10);
-    ultra.onTooClose(boost::bind(&Beeper::beep, &beeper));
+    int count = 0;
+
+    ultra.onTooClose([&count, &beeper]()
+    {
+        count++;
+
+        if (count >= 3)
+        {
+            beeper.beep();
+        }
+    });
+
+    ultra.onFarEnough([&count]() { count = 0; });
 
     onTimeout.connect(boost::bind(&Ultrasound::trigger, &ultra));
+    const auto interval = boost::chrono::seconds(1);
 
     for (;;)
     {
-        boost::this_thread::sleep_for(boost::chrono::seconds(1));
+        boost::this_thread::sleep_for(interval);
         onTimeout();
     }
 

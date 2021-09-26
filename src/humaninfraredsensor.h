@@ -15,27 +15,20 @@
 
 #include <boost/atomic/atomic.hpp>
 #include <boost/chrono/system_clocks.hpp>
-#include <boost/signals2.hpp>
 
 
 // HC-SR501
 class HumanInfraredSensor : public BasicUnit
 {
-    using OnEnter = boost::signals2::signal<void()>;
-    using OnLeave = boost::signals2::signal<void()>;
-
 public:
-    using OnEnterSlot = OnEnter::slot_type;
-    using OnLeaveSlot = OnLeave::slot_type;
-
     HumanInfraredSensor(int power, int out);
 
-    boost::signals2::connection onEnter(const OnEnterSlot &slot)
+    boost::signals2::connection onEnter(const OnEventSlot &slot)
     {
         return onEnter_.connect(slot);
     }
 
-    boost::signals2::connection onLeave(const OnLeaveSlot &slot)
+    boost::signals2::connection onLeave(const OnEventSlot &slot)
     {
         return onLeave_.connect(slot);
     }
@@ -48,8 +41,8 @@ private:
 private:
     using Clock = boost::chrono::steady_clock;
     static HumanInfraredSensor *instance_;
-    OnEnter onEnter_;
-    OnLeave onLeave_;
+    OnEvent onEnter_;
+    OnEvent onLeave_;
     boost::atomic<bool> entered_;
     Clock::time_point lastRising_;
     Clock::duration threshold_;

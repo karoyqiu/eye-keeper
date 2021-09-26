@@ -13,21 +13,20 @@
 #pragma once
 #include "basicunit.h"
 
-#include <boost/signals2.hpp>
-
 
 class Ultrasound : public BasicUnit
 {
-    using OnTooClose= boost::signals2::signal<void()>;
-
 public:
-    using OnTooCloseSlot = OnTooClose::slot_type;
-
     Ultrasound(int vcc, int trig, int echo);
 
-    boost::signals2::connection onTooClose(const OnTooCloseSlot &slot)
+    boost::signals2::connection onTooClose(const OnEventSlot &slot)
     {
         return onTooClose_.connect(slot);
+    }
+
+    boost::signals2::connection onFarEnough(const OnEventSlot &slot)
+    {
+        return onFarEnough_.connect(slot);
     }
 
     void trigger();
@@ -37,12 +36,11 @@ private:
 
 private:
     using Clock = boost::chrono::steady_clock;
-
     static Ultrasound *instance_;
 
-    OnTooClose onTooClose_;
+    OnEvent onTooClose_;
+    OnEvent onFarEnough_;
     Clock::time_point lastHigh_;
     int echo_;
     int threshold_;
 };
-
